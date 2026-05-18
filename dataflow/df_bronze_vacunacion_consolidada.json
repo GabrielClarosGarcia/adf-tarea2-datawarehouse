@@ -54,6 +54,9 @@
 				},
 				{
 					"name": "union2"
+				},
+				{
+					"name": "derivedColumn4"
 				}
 			],
 			"scriptLines": [
@@ -223,7 +226,12 @@
 				"select2 derive(origen_datos = \"SCZ\") ~> derivedColumn2",
 				"select3 derive(origen_datos = \"RURAL\") ~> derivedColumn3",
 				"derivedColumn1, derivedColumn2 union(byName: true)~> union1",
-				"union1, derivedColumn3 union(byName: true)~> union2"
+				"union1, derivedColumn3 union(byName: true)~> union2",
+				"union2 derive(comunidad_indigena = toBoolean(comunidad_indigena),",
+				"          numero_dosis = toInteger(numero_dosis),",
+				"          temperatura_conservacion = toDecimal(temperatura_conservacion),",
+				"          edad_dias_aplicacion = toInteger(edad_dias_aplicacion),",
+				"          aplicacion_oportuna = toBoolean(aplicacion_oportuna)) ~> derivedColumn4"
 			]
 		}
 	}
