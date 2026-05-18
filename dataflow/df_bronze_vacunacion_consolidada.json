@@ -39,6 +39,21 @@
 				},
 				{
 					"name": "select3"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "union2"
 				}
 			],
 			"scriptLines": [
@@ -203,7 +218,12 @@
 				"          via_administracion = administration_route",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select3"
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"select1 derive(origen_datos = \"LPZ\") ~> derivedColumn1",
+				"select2 derive(origen_datos = \"SCZ\") ~> derivedColumn2",
+				"select3 derive(origen_datos = \"RURAL\") ~> derivedColumn3",
+				"derivedColumn1, derivedColumn2 union(byName: true)~> union1",
+				"union1, derivedColumn3 union(byName: true)~> union2"
 			]
 		}
 	}
