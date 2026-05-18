@@ -227,11 +227,29 @@
 				"select3 derive(origen_datos = \"RURAL\") ~> derivedColumn3",
 				"derivedColumn1, derivedColumn2 union(byName: true)~> union1",
 				"union1, derivedColumn3 union(byName: true)~> union2",
-				"union2 derive(comunidad_indigena = toBoolean(comunidad_indigena),",
+				"union2 derive(comunidad_indigena = iif(",
+				"    startsWith(lower(trim(toString(comunidad_indigena))), 's')",
+				"    || lower(trim(toString(comunidad_indigena))) == 'true'",
+				"    || lower(trim(toString(comunidad_indigena))) == '1',",
+				"    true(),",
+				"    false()",
+				"),",
 				"          numero_dosis = toInteger(numero_dosis),",
 				"          temperatura_conservacion = toDecimal(temperatura_conservacion),",
 				"          edad_dias_aplicacion = toInteger(edad_dias_aplicacion),",
-				"          aplicacion_oportuna = toBoolean(aplicacion_oportuna)) ~> derivedColumn4"
+				"          aplicacion_oportuna = iifNull(",
+				"    toBoolean(aplicacion_oportuna),",
+				"    false()",
+				"),",
+				"          fecha_nacimiento = coalesce(",
+				"    toDate(fecha_nacimiento,'d/M/yyyy'),",
+				"    toDate(toTimestamp(fecha_nacimiento,\"yyyy-MM-dd'T'HH:mm:ss\"))",
+				"),",
+				"          fecha_vacunacion = coalesce(",
+				"    toDate(fecha_vacunacion,'d/M/yyyy'),",
+				"    toDate(toTimestamp(fecha_vacunacion,\"yyyy-MM-dd'T'HH:mm:ss\"))",
+				"),",
+				"          municipio_residencia = initCap(lower(municipio_residencia))) ~> derivedColumn4"
 			]
 		}
 	}
