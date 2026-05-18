@@ -29,7 +29,15 @@
 					"name": "source3"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "silver_vacunacion_consolidada",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "select1"
@@ -253,7 +261,42 @@
 				"    toDate(toTimestamp(fecha_vacunacion,\"yyyy-MM-dd'T'HH:mm:ss\"))",
 				"),",
 				"          municipio_residencia = initCap(lower(municipio_residencia))) ~> derivedColumn4",
-				"derivedColumn4 filter(!isNull(registro_id)) ~> filter1"
+				"derivedColumn4 filter(!isNull(registro_id)) ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          registro_id,",
+				"          paciente_id,",
+				"          ci_paciente,",
+				"          nombre_paciente,",
+				"          apellido_paterno,",
+				"          apellido_materno,",
+				"          sexo,",
+				"          fecha_nacimiento,",
+				"          municipio_residencia,",
+				"          comunidad_indigena,",
+				"          fecha_vacunacion,",
+				"          vacuna_id,",
+				"          vacuna_nombre,",
+				"          numero_dosis,",
+				"          establecimiento_id,",
+				"          nombre_establecimiento,",
+				"          departamento,",
+				"          lote_vacuna,",
+				"          temperatura_conservacion,",
+				"          edad_dias_aplicacion,",
+				"          via_administracion,",
+				"          origen_datos,",
+				"          aplicacion_oportuna",
+				"     )) ~> sink1"
 			]
 		}
 	}
