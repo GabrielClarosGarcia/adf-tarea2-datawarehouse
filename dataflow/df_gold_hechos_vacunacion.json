@@ -52,7 +52,19 @@
 					"name": "select1"
 				},
 				{
+					"name": "derivedColumn1"
+				},
+				{
 					"name": "lookup2"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "lookup3"
+				},
+				{
+					"name": "select3"
 				}
 			],
 			"scriptLines": [
@@ -168,10 +180,73 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1, dimTiempo lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"select1 derive(fecha_key = toInteger(toString(fecha_vacunacion, 'yyyyMMdd'))) ~> derivedColumn1",
+				"derivedColumn1, dimTiempo lookup(derivedColumn1@fecha_key == dimTiempo@fecha_key,",
 				"     multiple: false,",
 				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup2"
+				"     broadcast: 'auto')~> lookup2",
+				"lookup2 select(mapColumn(",
+				"          registro_id,",
+				"          paciente_id,",
+				"          ci_paciente,",
+				"          nombre_paciente,",
+				"          apellido_paterno,",
+				"          apellido_materno,",
+				"          sexo,",
+				"          fecha_nacimiento,",
+				"          municipio_residencia,",
+				"          comunidad_indigena,",
+				"          fecha_vacunacion,",
+				"          vacuna_id,",
+				"          vacuna_nombre,",
+				"          numero_dosis,",
+				"          establecimiento_id,",
+				"          nombre_establecimiento,",
+				"          departamento,",
+				"          lote_vacuna,",
+				"          temperatura_conservacion,",
+				"          edad_dias_aplicacion,",
+				"          aplicacion_oportuna,",
+				"          via_administracion,",
+				"          establecimiento_key,",
+				"          fecha_key = derivedColumn1@fecha_key,",
+				"          fecha_key = dimTiempo@fecha_key",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2, dimVacuna lookup(select2@vacuna_id == dimVacuna@vacuna_id,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup3",
+				"lookup3 select(mapColumn(",
+				"          registro_id,",
+				"          paciente_id,",
+				"          ci_paciente,",
+				"          nombre_paciente,",
+				"          apellido_paterno,",
+				"          apellido_materno,",
+				"          sexo,",
+				"          fecha_nacimiento,",
+				"          municipio_residencia,",
+				"          comunidad_indigena,",
+				"          fecha_vacunacion,",
+				"          vacuna_id = select2@vacuna_id,",
+				"          vacuna_nombre = select2@vacuna_nombre,",
+				"          numero_dosis = select2@numero_dosis,",
+				"          establecimiento_id,",
+				"          nombre_establecimiento,",
+				"          departamento,",
+				"          lote_vacuna,",
+				"          temperatura_conservacion,",
+				"          edad_dias_aplicacion,",
+				"          aplicacion_oportuna,",
+				"          via_administracion = select2@via_administracion,",
+				"          establecimiento_key,",
+				"          fecha_key,",
+				"          vacuna_key",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3"
 			]
 		}
 	}
