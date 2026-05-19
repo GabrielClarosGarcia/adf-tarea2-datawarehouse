@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "df_gold_dim_paciente",
+						"referenceName": "df_gold_hechos_vacunacion",
 						"type": "DataFlowReference"
 					},
 					"compute": {
