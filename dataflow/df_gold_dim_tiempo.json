@@ -66,6 +66,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
+				"          fecha_key,",
 				"          fecha,",
 				"          dia_semana,",
 				"          nombre_dia,",
