@@ -168,7 +168,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1, dimPaciente lookup(trim(lower(toString(select1@ci_paciente))) == trim(lower(toString(dimPaciente@ci_paciente))),",
+				"select1, dimPaciente lookup(trim(toString(select1@paciente_id)) == trim(toString(dimPaciente@paciente_id)),",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup2"
