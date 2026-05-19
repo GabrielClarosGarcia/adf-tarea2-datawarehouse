@@ -39,7 +39,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: '-- DIM_PACIENTE\\nSELECT DISTINCT\\n    paciente_id,\\n    ci_paciente,\\n    nombre_paciente,\\n    apellido_paterno,\\n    apellido_materno,\\n    sexo,\\n    fecha_nacimiento,\\n    comunidad_indigena\\nFROM silver.vacunacion_consolidada\\nWHERE paciente_id IS NOT NULL',",
+				"     query: 'SELECT\\n    MAX(paciente_id) AS paciente_id,\\n    ci_paciente,\\n    MAX(nombre_paciente) AS nombre_paciente,\\n    MAX(apellido_paterno) AS apellido_paterno,\\n    MAX(apellido_materno) AS apellido_materno,\\n    MAX(sexo) AS sexo,\\n    fecha_nacimiento,\\n    MAX(comunidad_indigena) AS comunidad_indigena\\nFROM silver.vacunacion_consolidada\\nWHERE ci_paciente IS NOT NULL\\nGROUP BY ci_paciente, fecha_nacimiento',",
 				"     format: 'query') ~> source1",
 				"source1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",

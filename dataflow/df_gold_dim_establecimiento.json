@@ -35,7 +35,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: '-- DIM_ESTABLECIMIENTO\\nSELECT DISTINCT\\n    establecimiento_id,\\n    nombre_establecimiento,\\n    departamento,\\n    municipio_residencia\\nFROM silver.vacunacion_consolidada\\nWHERE establecimiento_id IS NOT NULL',",
+				"     query: 'SELECT\\n    establecimiento_id,\\n    MAX(nombre_establecimiento) AS nombre_establecimiento,\\n    MAX(departamento) AS departamento,\\n    MAX(municipio_residencia) AS municipio_residencia\\nFROM silver.vacunacion_consolidada\\nWHERE establecimiento_id IS NOT NULL\\nGROUP BY establecimiento_id',",
 				"     format: 'query') ~> source1",
 				"source1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",

@@ -47,12 +47,6 @@
 			"transformations": [
 				{
 					"name": "lookup1"
-				},
-				{
-					"name": "select1"
-				},
-				{
-					"name": "lookup2"
 				}
 			],
 			"scriptLines": [
@@ -140,54 +134,7 @@
 				"vacunasConsolidadas, dimEstablecimiento lookup(trim(lower(toString(vacunasConsolidadas@establecimiento_id))) == trim(lower(toString(dimEstablecimiento@establecimiento_id))),",
 				"     multiple: false,",
 				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup1",
-				"lookup1 select(mapColumn(",
-				"          registro_id,",
-				"          paciente_id,",
-				"          ci_paciente,",
-				"          nombre_paciente,",
-				"          apellido_paterno,",
-				"          apellido_materno,",
-				"          sexo,",
-				"          fecha_nacimiento,",
-				"          municipio_residencia = vacunasConsolidadas@municipio_residencia,",
-				"          comunidad_indigena,",
-				"          fecha_vacunacion,",
-				"          vacuna_id,",
-				"          vacuna_nombre,",
-				"          numero_dosis,",
-				"          establecimiento_id = vacunasConsolidadas@establecimiento_id,",
-				"          nombre_establecimiento = vacunasConsolidadas@nombre_establecimiento,",
-				"          departamento = vacunasConsolidadas@departamento,",
-				"          lote_vacuna,",
-				"          temperatura_conservacion,",
-				"          edad_dias_aplicacion,",
-				"          aplicacion_oportuna,",
-				"          via_administracion,",
-				"          establecimiento_key",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1, dimPaciente lookup(concat(",
-				"  trim(lower(toString(select1@ci_paciente))),",
-				"  '|',",
-				"  trim(lower(toString(select1@nombre_paciente))),",
-				"  '|',",
-				"  trim(lower(toString(select1@apellido_paterno))),",
-				"  '|',",
-				"  toString(select1@fecha_nacimiento)",
-				") == concat(",
-				"  trim(lower(toString(dimPaciente@ci_paciente))),",
-				"  '|',",
-				"  trim(lower(toString(dimPaciente@nombre_paciente))),",
-				"  '|',",
-				"  trim(lower(toString(dimPaciente@apellido_paterno))),",
-				"  '|',",
-				"  toString(dimPaciente@fecha_nacimiento)",
-				"),",
-				"     multiple: false,",
-				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup2"
+				"     broadcast: 'auto')~> lookup1"
 			]
 		}
 	}
