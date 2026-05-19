@@ -23,13 +23,6 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "gold_dim_paciente",
-						"type": "DatasetReference"
-					},
-					"name": "dimPaciente"
-				},
-				{
-					"dataset": {
 						"referenceName": "gold_dim_tiempo",
 						"type": "DatasetReference"
 					},
@@ -41,6 +34,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "dimVacuna"
+				},
+				{
+					"dataset": {
+						"referenceName": "gold_dim_paciente",
+						"type": "DatasetReference"
+					},
+					"name": "dimPaciente"
 				}
 			],
 			"sinks": [],
@@ -96,21 +96,6 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> dimEstablecimiento",
 				"source(output(",
-				"          paciente_key as integer,",
-				"          paciente_id as string,",
-				"          ci_paciente as string,",
-				"          nombre_paciente as string,",
-				"          apellido_paterno as string,",
-				"          apellido_materno as string,",
-				"          sexo as string,",
-				"          fecha_nacimiento as date,",
-				"          comunidad_indigena as boolean",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> dimPaciente",
-				"source(output(",
 				"          fecha_key as integer,",
 				"          fecha as date,",
 				"          dia_semana as integer,",
@@ -137,6 +122,21 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> dimVacuna",
+				"source(output(",
+				"          paciente_key as integer,",
+				"          paciente_id as string,",
+				"          ci_paciente as string,",
+				"          nombre_paciente as string,",
+				"          apellido_paterno as string,",
+				"          apellido_materno as string,",
+				"          sexo as string,",
+				"          fecha_nacimiento as date,",
+				"          comunidad_indigena as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimPaciente",
 				"vacunasConsolidadas, dimEstablecimiento lookup(vacunasConsolidadas@establecimiento_id == dimEstablecimiento@establecimiento_id,",
 				"     multiple: false,",
 				"     pickup: 'any',",
@@ -168,7 +168,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1, dimPaciente lookup(trim(toString(select1@paciente_id)) == trim(toString(dimPaciente@paciente_id)),",
+				"select1, dimTiempo lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup2"
